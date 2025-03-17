@@ -1,5 +1,20 @@
 # MathAPI Documentation
 
+## Design patterns used : Repository Pattern
+# Avantages
+
+1. **Encapsulation of Data Access Logic**  
+   - The `PrismaCrud` class encapsulates all database interactions, keeping the data access logic separate from business logic.
+  
+2. **Abstraction over Prisma ORM**  
+   - Instead of directly using `PrismaClient` everywhere in the application, this class provides an abstraction, making it easier to maintain and swap out the ORM if needed.
+  
+3. **Single Responsibility Principle (SRP)**  
+   - This class is solely responsible for interacting with the `logs` table. If you have multiple entities, you could create separate repository classes for them.
+
+4. **Decoupling Business Logic from Data Access**  
+   - The service or controller that uses this class doesn’t need to worry about how data is fetched, updated, or deleted.
+
 ## API Endpoints
 
 ### 1. Addition Endpoint
@@ -159,4 +174,5 @@
     ```sh
      npm test
      ```
+
 
