@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-class PrismaCrud{
+export class PrismaCrud{
     private prisma: PrismaClient
     constructor(){
         this.prisma = new PrismaClient();
