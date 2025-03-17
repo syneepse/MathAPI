@@ -1,34 +1,35 @@
 import express, { Request, Response } from "express";
 import { PrismaCrud } from "./PrismaCrud";
 import { error } from "console";
+import { request } from "http";
 
 const app = express();
 const port = 3000;
 
 const prismaCrud = new PrismaCrud();
 
-function fibonacci(n: number): number {
+async function fibonacci(n: number): Promise<number> {
     if (n <= 1) {
         return n;
     }
-    let curr = 1;
-    let prev = 0;
+    let curr: number = 1;
+    let prev: number = 0;
     for (let i = 2; i <= n; i++) {
-        let temp = curr;
+        let temp: number = curr;
         curr = curr + prev;
         prev = temp;
     }
+    console.log("Fibonacci: ", curr);
     return curr;
 }
 
-function fact(n: number): number {
+async function fact(n: number): Promise<number> {
     if (n <= 1) {
         return 1;
-    }
-    else if(n > 20){
+    } else if (n > 20) {
         throw new Error("Number too large");
     }
-    let ans:number = 1;
+    let ans: number = 1;
     for (let i = 2; i <= n; i++) {
         ans *= i;
     }
@@ -94,10 +95,11 @@ app.put("/logs/:id/:path/:query", (req: Request, res: Response) => {
     }
 });
 
-app.get("/fibonaci/:n", (req: Request, res: Response) => {
-    const n = parseInt(req.params.n);
-    let ans: number = fibonacci(n);
-    prismaCrud.createLogs("/fibonaci", `fibonacci(${n.toString()})`).then(
+app.get("/fibonaci/:n", async (req: Request, res: Response) => {
+    const n: number = parseInt(req.params.n);
+    let ans: number = await fibonacci(n);
+    console.log("Fibonacci: ", ans);
+    await prismaCrud.createLogs("/fibonaci", `fibonacci(${n.toString()})`).then(
         () => {
             console.log("Log created");
         },
@@ -105,14 +107,18 @@ app.get("/fibonaci/:n", (req: Request, res: Response) => {
             console.log(error);
         },
     );
-    res.send(ans.toString());
+    if (!ans) {
+        res.status(400).send("Number too large");
+    } else {
+        res.json({ "value": ans.toString() });
+    }
 });
 
-app.get("/sum/:a/:b", (req: Request, res: Response) => {
+app.get("/sum/:a/:b", async (req: Request, res: Response) => {
     const a = parseInt(req.params.a);
     const b = parseInt(req.params.b);
     let ans: number = a + b;
-    prismaCrud.createLogs("/sum", `sum(${a.toString()}, ${b.toString()})`).then(
+    await prismaCrud.createLogs("/sum", `sum(${a.toString()}, ${b.toString()})`).then(
         () => {
             console.log("Log created");
         },
@@ -120,14 +126,18 @@ app.get("/sum/:a/:b", (req: Request, res: Response) => {
             console.log(error);
         },
     );
-    res.send(ans.toString());
+    res.json({ "value": ans.toString() });
 });
 
-app.get("/product/:a/:b", (req: Request, res: Response) => {
+app.get("/add", (req: Request, res: Response) => {
+    res.status(200).send("ok");
+});
+
+app.get("/product/:a/:b", async (req: Request, res: Response) => {
     const a = parseInt(req.params.a);
     const b = parseInt(req.params.b);
     let ans: number = a * b;
-    prismaCrud.createLogs(
+    await prismaCrud.createLogs(
         "/product",
         `product(${a.toString()}, ${b.toString()})`,
     ).then(() => {
@@ -135,13 +145,13 @@ app.get("/product/:a/:b", (req: Request, res: Response) => {
     }, (error) => {
         console.log(error);
     });
-    res.send(ans.toString());
+    res.json({ "value": ans.toString() });
 });
 
-app.get("/factorial/:n", (req: Request, res: Response) => {
+app.get("/factorial/:n",async (req: Request, res: Response) => {
     const n = parseInt(req.params.n);
-    let ans: number = fact(n);
-    prismaCrud.createLogs("/factorial", `factorial(${n.toString()})`).then(
+    let ans: number = await fact(n);
+    await prismaCrud.createLogs("/factorial", `factorial(${n.toString()})`).then(
         () => {
             console.log("Log created");
         },
@@ -149,9 +159,11 @@ app.get("/factorial/:n", (req: Request, res: Response) => {
             console.log(error);
         },
     );
-    res.send(ans.toString());
+    res.json({ "value": ans.toString() });
 });
 
-app.listen(port, () => {
+
+
+export const server = app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
