@@ -26,7 +26,7 @@
 - **Response Format:**
     ```json
     {
-        "result": number
+        "value": string
     }
     ```
 
@@ -39,7 +39,7 @@
 - **Response Format:**
     ```json
     {
-        "result": number
+        "value": string
     }
     ```
 
@@ -52,7 +52,7 @@
 - **Response Format:**
     ```json
     {
-        "result": number
+        "value": string
     }
     ```
 
@@ -65,7 +65,7 @@
 - **Response Format:**
     ```json
     {
-        "result": number
+        "value": string
     }
     ```
 
@@ -77,7 +77,7 @@
 - **Response Format:**
     ```json
     {
-        "result": number
+        "value": string
     }
     ```
 
@@ -89,7 +89,7 @@
 - **Response Format:**
     ```json
     {
-        "result": number
+        "value": string
     }
     ```
 
