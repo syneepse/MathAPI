@@ -1,6 +1,6 @@
 # MathAPI Documentation
 
-### Design patterns used : Repository Pattern
+### Design pattern used : Repository Pattern
 **Avantages**
 
 1. **Encapsulation of Data Access Logic**  
