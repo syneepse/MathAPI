@@ -1,7 +1,7 @@
 # MathAPI Documentation
 
-## Design patterns used : Repository Pattern
-# Avantages
+### Design patterns used : Repository Pattern
+**Avantages**
 
 1. **Encapsulation of Data Access Logic**  
    - The `PrismaCrud` class encapsulates all database interactions, keeping the data access logic separate from business logic.
